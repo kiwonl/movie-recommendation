@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: genai-app-ksa
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: genai-app-rag
+ labels:
+   app: genai-app-rag
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: genai-app-rag
+ template:
+   metadata:
+     labels:
+       app: genai-app-rag
+   spec:
+     containers:
+     - name: genai-app-rag
+       image: $AR_REPO/$APP_NAME:v2
+       env:
+       - name: PROJECT_ID
+         value: $PROJECT_ID
+       ports:
+       - containerPort: 8080
+     serviceAccountName: genai-app-ksa
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: genai-app-svc-rag
+spec:
+ selector:
+   app: genai-app-rag
+ ports:
+   - protocol: TCP
+     port: 80
+     targetPort: 8080
+ type: LoadBalancer
