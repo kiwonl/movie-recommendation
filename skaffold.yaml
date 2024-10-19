@@ -1,9 +1,12 @@
 apiVersion: skaffold/v2beta16
 kind: Config
 build:
+  tagPolicy:
+    sha256: {}
   artifacts:
-#  - image: us-central1-docker.pkg.dev/PROJECT_ID/docker-repo/movie-recommendation
-  - image: us-central1-docker.pkg.dev/qwiklabs-gcp-02-fa3a52825875/docker-repo/movie-recommendation
-    context: ./
+  - context: .
+    image: movie-recommendation
 deploy:
-  kubectl: {}
+  kubectl:
+    manifests:
+    - k8s.yaml
