@@ -18,9 +18,9 @@ steps:
       "--build-artifacts", "/workspace/artifacts.json"
     ]
 substitutions:
-  _DELIVERY_PIPELINE_NAME: helm-demo-pipeline
+  _DELIVERY_PIPELINE_NAME: movie-recommendation-pipeline
   _REGION: us-central1
 options:
   logging: CLOUD_LOGGING_ONLY
-#  machineType: E2_HIGHCPU_8
+  machineType: E2_HIGHCPU_8
 #timeout: 3600s
