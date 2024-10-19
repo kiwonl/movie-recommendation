@@ -1,9 +1,6 @@
 apiVersion: skaffold/v2beta16
 kind: Config
 build:
-  tagPolicy:
-    customTemplate:
-     template: "latest"
   artifacts:
 #  - image: us-central1-docker.pkg.dev/PROJECT_ID/docker-repo/movie-recommendation
   - image: us-central1-docker.pkg.dev/qwiklabs-gcp-02-fa3a52825875/docker-repo/movie-recommendation
