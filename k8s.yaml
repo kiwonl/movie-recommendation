@@ -21,7 +21,7 @@ spec:
    spec:
      containers:
      - name: genai-app-rag
-       image: $AR_REPO/$APP_NAME
+       image: movie-recommendation
        env:
        - name: PROJECT_ID
          value: $PROJECT_ID
