@@ -9,10 +9,4 @@ build:
 deploy:
   kubectl:
     manifests:
-    - k8s.yaml
-profiles:
-- name: cloudbuild
-  build:
-    googleCloudBuild: {
-      projectId: qwiklabs-gcp-02-fa3a52825875
-    }
+    - ./k8s.yaml
