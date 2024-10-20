@@ -23,7 +23,7 @@ spec:
      - name: genai-app-rag
        image: movie-recommendation
        env:
-       - name: PROJECT_ID
+       - name: PRJ_ID
          value: $PROJECT_ID
        ports:
        - containerPort: 8080
