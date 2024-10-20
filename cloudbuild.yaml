@@ -20,7 +20,7 @@ steps:
     ]
 substitutions:
   _DELIVERY_PIPELINE_NAME: movie-recommendation-pipeline
-  _REPOSITORY: us-central1-docker.pkg.dev/qwiklabs-gcp-02-fa3a52825875/docker-repo
+  _REPOSITORY: us-central1-docker.pkg.dev/${PROJECT_ID}/docker-repo
   _REGION: us-central1
 options:
   logging: CLOUD_LOGGING_ONLY
