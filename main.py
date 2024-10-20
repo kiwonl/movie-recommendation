@@ -12,7 +12,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 from langchain_core.documents import Document
 
-project_id = os.environ["PROJECT_ID"]
+project_id = os.environ["PRJ_ID"]
 instance_name = "movies-instance"
 cluster_name = "movies-cluster"
 alloy_region = "us-central1"
