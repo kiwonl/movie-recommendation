@@ -24,7 +24,7 @@ spec:
        image: movie-recommendation
        env:
        - name: PRJ_ID
-         value: $PROJECT_ID
+         value: PROJECT_ID
        ports:
        - containerPort: 8080
      serviceAccountName: genai-app-ksa
