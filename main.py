@@ -1,6 +1,7 @@
 import vertexai
 from vertexai.generative_models import GenerativeModel, SafetySetting, Part
 import os
+import sys
 import json
 from flask import Flask, request, render_template
 import logging
@@ -52,16 +53,16 @@ def vertex_movie_recommendation(movies, scenario):
 def movie_recommendations():
   movies = request.json['movies']
   scenario = request.json['scenario']
-  print(f"Received movies: {movies}, Received scenario: {scenario}")
+  print(f"Received movies: {movies}, Received scenario: {scenario}", file=sys.stdout)
 
   try:
     recommendation_response = vertex_movie_recommendation(movies, scenario)
   except Exception as e:
-    print(f"Error occurred: {e}")
+    print(f"Error occurred: {e}", file=sys.stderr)
     return e, 500;
   
   result = json.dumps({'recommendation': recommendation_response}, ensure_ascii = False)
-  print(f"Result: {result}")
+  print(f"Result: {result}", file=sys.stdout)
   
   return result, 200, {'Content-Type': 'application/json; charset=utf-8'}
 
