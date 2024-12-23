@@ -3,4 +3,3 @@ flask
 werkzeug
 gunicorn
 google.auth
-prometheus-client
