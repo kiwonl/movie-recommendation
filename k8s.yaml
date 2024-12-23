@@ -1,43 +1,47 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: genai-app-ksa
+  name: $SERVICE_ACCOUNT
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
- name: genai-app-rag
+ name: mr-app
  labels:
-   app: genai-app-rag
+   app: mr-app
 spec:
  replicas: 1
  selector:
    matchLabels:
-     app: genai-app-rag
+     app: mr-app
  template:
    metadata:
      labels:
-       app: genai-app-rag
+       app: mr-app
    spec:
      containers:
-     - name: genai-app-rag
-       image: movie-recommendation
-       env:
-       - name: PRJ_ID
-         value: PROJECT_ID
+     - name: mr-app
+       image: ${REGION}-docker.pkg.dev/${PROJECT_ID}/docker-repo/movie-recommendation
        ports:
        - containerPort: 8080
-     serviceAccountName: genai-app-ksa
+       env:
+       - name: PROJECT_ID
+         value: $PROJECT_ID
+       - name: REGION
+         value: $REGION
+       - name: GEMINI_MODEL
+         value: $GEMINI_MODEL
+     serviceAccountName: $SERVICE_ACCOUNT
 ---
 apiVersion: v1
 kind: Service
 metadata:
- name: genai-app-svc-rag
+ name: mr-app-svc
 spec:
  selector:
-   app: genai-app-rag
+   app: mr-app
  ports:
-   - protocol: TCP
-     port: 80
-     targetPort: 8080
+ - protocol: TCP
+   port: 80
+   targetPort: 8080
  type: LoadBalancer
