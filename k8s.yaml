@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: $SERVICE_ACCOUNT
+  name: ${SERVICE_ACCOUNT}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -26,12 +26,12 @@ spec:
        - containerPort: 8080
        env:
        - name: PROJECT_ID
-         value: $PROJECT_ID
+         value: ${PROJECT_ID}
        - name: REGION
-         value: $REGION
+         value: ${REGION}
        - name: GEMINI_MODEL
-         value: $GEMINI_MODEL
-     serviceAccountName: $SERVICE_ACCOUNT
+         value: ${GEMINI_MODEL}
+     serviceAccountName: ${SERVICE_ACCOUNT}
 ---
 apiVersion: v1
 kind: Service
