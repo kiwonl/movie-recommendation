@@ -11,7 +11,7 @@ from prometheus_client import generate_latest, REGISTRY, Counter, Gauge, Histogr
 # Initialize Flask app
 app = Flask(__name__)
 # Set werkzeug logger level to ERROR to suppress unnecessary logs
-logging.getLogger('werkzeug').setLevel(logging.ERROR)
+# logging.getLogger('werkzeug').setLevel(logging.ERROR)
 
 # Prometheus metrics
 # Counter for total HTTP requests
