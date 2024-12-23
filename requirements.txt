@@ -1,8 +1,6 @@
-langchain
-langchain-google-vertexai
-langchain-google-alloydb-pg
-google-cloud-alloydb-connector[pg8000]
+google-cloud-aiplatform
 flask
 werkzeug
 gunicorn
-
+google.auth
+prometheus-client
