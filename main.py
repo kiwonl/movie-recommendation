@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 # Initialize Vertex AI
 vertexai.init(project=os.getenv("PROJECT_ID"), location=os.getenv("REGION"))
+
 # Initialize Gemini model
 model = GenerativeModel(os.getenv("GEMINI_MODEL"))
 generation_config = {
@@ -65,11 +66,6 @@ def movie_recommendations():
   print(f"Result: {result}", file=sys.stdout)
   
   return result, 200, {'Content-Type': 'application/json; charset=utf-8'}
-
-# Route for Prometheus metrics
-@app.route('/metrics')
-def metrics():
-    return generate_latest(REGISTRY)
 
 # Run the Flask app
 if __name__ == '__main__':
