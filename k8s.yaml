@@ -28,8 +28,8 @@ spec:
          httpGet:
            path: /healthz
            port: 8080
-         initialDelaySeconds: 3
-         periodSeconds: 3
+         initialDelaySeconds: 60
+         periodSeconds: 10
        env:
        - name: PROJECT_ID
          value: ${PROJECT_ID}
