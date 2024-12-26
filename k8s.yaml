@@ -24,6 +24,12 @@ spec:
        image: ${REGION}-docker.pkg.dev/${PROJECT_ID}/docker-repo/movie-recommendation
        ports:
        - containerPort: 8080
+       readinessProbe:
+         httpGet:
+           path: /healthz
+           port: 8080
+         initialDelaySeconds: 3
+         periodSeconds: 3
        env:
        - name: PROJECT_ID
          value: ${PROJECT_ID}
