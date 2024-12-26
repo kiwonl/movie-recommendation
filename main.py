@@ -67,6 +67,11 @@ def movie_recommendations():
   
   return result, 200, {'Content-Type': 'application/json; charset=utf-8'}
 
+# healthz
+@app.route('/healthz')
+def healthz():
+    return 'OK', 200
+
 # Run the Flask app
 if __name__ == '__main__':
   port = int(os.environ.get('PORT', 8080))
