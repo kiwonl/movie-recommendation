@@ -67,6 +67,12 @@ def movie_recommendations():
   
   return result, 200, {'Content-Type': 'application/json; charset=utf-8'}
 
+# Route for movie recommendations webpage
+@app.route('/')
+def index():
+  # Renders the index page.
+  return render_template('index.html', revision=os.getenv("K_REVISION"), region=os.getenv("REGION"))
+
 # healthz
 @app.route('/healthz')
 def healthz():
