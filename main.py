@@ -71,7 +71,10 @@ def movie_recommendations():
 @app.route('/')
 def index():
   # Renders the index page.
-  return render_template('index.html', revision=os.getenv("K_REVISION"), region=os.getenv("REGION"))
+  return render_template('index-v1.html', revision=os.getenv("K_REVISION"), region=os.getenv("REGION"))
+  ##############################################
+  # return render_template('index-v2.html', revision=os.getenv("K_REVISION"), region=os.getenv("REGION"))
+  ##############################################
 
 # healthz
 @app.route('/healthz')
