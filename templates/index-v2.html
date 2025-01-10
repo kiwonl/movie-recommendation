@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Movie Recommendation</title>
+  <link
+      href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQh58iYOTvQj13J/KU6Y5jbN28RgyawD/2LqAShwn5gNSi59Nke7Gk67"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455iVxg6sW1EUvl2OU"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+      body {
+        font-family: 'Helvetica', 'Arial', sans-serif;
+      }
+      h1 {
+        margin-bottom: 1.6em;
+      }
+      h2 {
+        font-weight: normal;
+      }
+      h3 {
+        margin-block-end: 0;
+      }
+      select {
+        width: 100%;
+        height: 56px;
+        font-size: 1.2rem;
+        padding: 10px;
+        margin-bottom: 30px;
+      }
+      .container {
+        max-width: 600px;
+        padding: 30px;
+      }
+      .field-label {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+      }
+      .mdc-text-field {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+      .visually-hidden {
+        display: none;
+      }
+      .recommendation-container {
+        background-color: #e0e0e0;
+        padding: 20px;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+<body>
+  <div class="container">
+    <h1>Gemini, Help us decide what to watch!</h1>
+
+    <h2>Not sure which movie to watch tonight? Let AI make a recommendation for you:</h2>
+
+    <form id="form">
+      <div class="field-label" id="movie1">Option 1:</div>
+      <label
+        class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label"
+      >
+        <input
+          class="mdc-text-field__input"
+          type="text"
+          aria-labelledby="movie1"
+          name="movie1"
+          required
+        />
+        <span class="mdc-line-ripple"></span>
+      </label>
+
+      <div class="field-label" id="movie2">Option 2:</div>
+      <label
+        class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label"
+      >
+        <input
+          class="mdc-text-field__input"
+          type="text"
+          aria-labelledby="movie2"
+          name="movie2"
+          required
+        />
+        <span class="mdc-line-ripple"></span>
+      </label>
+
+      <div class="field-label" id="movie3">Option 3:</div>
+      <label
+        class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label"
+      >
+        <input
+          class="mdc-text-field__input"
+          type="text"
+          aria-labelledby="movie3"
+          name="movie3"
+          required
+        />
+        <span class="mdc-line-ripple"></span>
+      </label>
+
+      <div class="field-label" id="setting">Setting:</div>
+      <select name="setting" id="setting">
+        <option value="가족들과 함께 보기 좋은 영화">가족들과 함께 보기 좋은 영화</option>
+        <option value="친구들과 함께 보기 좋은 영화">친구들과 함께 보기 좋은 영화</option>
+        <option value="연인과 함께 보기 좋은 영화">연인과 함께 보기 좋은 영화</option>
+        <option value="혼자 보기 좋은 영화">혼자 보기 좋은 영화</option>
+      </select>
+
+      <button
+        type="submit"
+        class="mdc-button mdc-button--raised mdc-button--touch"
+        id="submit"
+      >
+        <span class="mdc-button__ripple"></span>
+        <span class="mdc-button__touch"></span>
+        <span class="mdc-button__label" id="submit-button-copy">Recommend</span>
+        <span class="mdc-button__label visually-hidden" id="loading">Loading...</span>
+      </button>
+    </form>
+
+    <div class="recommendation-container visually-hidden"></div>
+  </div>
+
+  <footer class="container mt-5">
+    <div class="text-center">
+      <p>Powered by
+        {% if revision is not none %}
+        <span>Cloud Run ({{revision}}) and </span>
+        {% endif%}
+        Gemini in {{region}}</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const textFields = document.querySelectorAll('.mdc-text-field');
+      const buttons = document.querySelectorAll('.mdc-button');
+      textFields.forEach((field) =>
+        mdc.textField.MDCTextField.attachTo(field)
+      );
+      buttons.forEach((btn) => mdc.ripple.MDCRipple.attachTo(btn));
+      const loading = document.getElementById('loading');
+      const submitButtonCopy = document.getElementById('submit-button-copy');
+      const recommendationContainer = document.querySelector('.recommendation-container');
+
+      const displayRecommendation = (data) => {
+        loading.classList.add('visually-hidden');
+        submitButtonCopy.classList.remove('visually-hidden');
+        recommendationContainer.classList.remove('visually-hidden');
+        recommendationContainer.innerHTML = marked.parse(data);
+      };
+
+      const submitForm = (e) => {
+        e.preventDefault();
+        submitButtonCopy.classList.add('visually-hidden');
+        loading.classList.remove('visually-hidden');
+        recommendationContainer.classList.add('visually-hidden');
+        const movie1 = e.target.querySelector('input[name="movie1"]').value;
+        const movie2 = e.target.querySelector('input[name="movie2"]').value;
+        const movie3 = e.target.querySelector('input[name="movie3"]').value;
+        const setting = e.target.querySelector('select[name="setting"]').value;
+        const requestBody = {
+          movies: [movie1, movie2, movie3],
+          scenario: setting,
+        };
+
+        fetch(
+          '/recommendations',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+          }
+        )
+        .then((res) => res.json())
+        .then((data) => displayRecommendation(data.recommendation))
+        .catch((error) => {
+          console.error('Error querying API: ', error);
+          alert('Sorry, there was an issue generating your recommendation. Please try again.');
+        });
+      };
+      const form = document.getElementById('form');
+      form.addEventListener('submit', submitForm);
+    })();
+  </script>
+</body>
